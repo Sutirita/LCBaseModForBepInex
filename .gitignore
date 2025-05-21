@@ -1,0 +1,17 @@
+﻿################################################################################
+# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
+################################################################################
+
+/.vs
+/LCBaseMod/.vs/LCBaseMod
+*.csproj
+*.user
+*.sln
+/LCBaseMod/bin/Debug
+*.cs
+/LCBaseMod/obj/Debug/LCBaseMod.pdb
+/LCBaseMod/obj/Debug/LCBaseMod.csproj.FileListAbsolute.txt
+/LCBaseMod/obj/Debug/LCBaseMod.csproj.AssemblyReference.cache
+/LCBaseMod/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/LCBaseMod/obj/Debug/LCBaseMod.csproj.CoreCompileInputs.cache
+/LCBaseMod/obj/Debug/LCBaseMod.dll
