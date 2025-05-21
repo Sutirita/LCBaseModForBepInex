@@ -1,0 +1,2 @@
+# LCBaseModForBepInex
+基于BepInex框架的LCBaseMod
