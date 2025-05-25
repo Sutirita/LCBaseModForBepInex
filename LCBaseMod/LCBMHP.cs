@@ -1,10 +1,12 @@
 ﻿
+using BepInEx.Core.Logging.Interpolation;
 using CommandWindow;
 using CreatureInfo;
 using Credit;
 using HarmonyLib;
 using Inventory;
 using nightowl.DistortionShaderPack;
+using Spine;
 using Spine.Unity;
 using System;
 using System.Collections;
@@ -20,7 +22,7 @@ using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LCBaseModForBepinEx
+namespace LCBaseMod
 {
     class BMHP_ConsoleScript
     {
@@ -74,6 +76,21 @@ namespace LCBaseModForBepinEx
         {
             __instance.GameVersionChecker.text += LCBaseMod.Instance.GetVertionStr();
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         //从设置菜单移除RO的名字
@@ -1279,6 +1296,7 @@ namespace LCBaseModForBepinEx
             }
 
             CreatureUnit creatureUnit = ResourceCache.instance.LoadPrefab("Unit/CreatureBase").GetComponent<CreatureUnit>();
+
             if (creatureUnit == null)
             {
                 LCBaseMod.Instance.MakeErrorLog("Failed to load CreatureUnit prefab.");

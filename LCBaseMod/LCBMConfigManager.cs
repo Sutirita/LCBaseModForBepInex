@@ -6,13 +6,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 using System.Xml;
 using System.Xml.Linq;
 using UnityEngine;
 
 
 
-namespace LCBaseModForBepinEx
+namespace LCBaseMod
 {
     public class BMConfigManager
     {
@@ -21,6 +22,10 @@ namespace LCBaseModForBepinEx
         private static string cfgfilepath = Path.Combine(BepInEx.Paths.ConfigPath, cfgfilename);
         private ConfigFile _BMConfigFile = new ConfigFile(cfgfilepath, true);
 
+
+
+
+        bool CfgDescLodedFlag = false;
 
         private string __lang = "cn";
 
@@ -93,29 +98,39 @@ namespace LCBaseModForBepinEx
             Assembly assembly = Assembly.GetExecutingAssembly();
 
             // 获取嵌入资源的名称
-            string resourceName = "LobotomyBaseModForBepinEx.LCBMConfigDesc.xml";
-
-            Stream stream = assembly.GetManifestResourceStream(resourceName);
-
-            XmlDocument ConfigxmlDocument = new XmlDocument();
-
-            ConfigxmlDocument.Load(stream);
-            foreach(XmlNode cfgnode in ConfigxmlDocument.SelectNodes("ConfigDesc/Config"))
+            string resourceName = $"LCBaseMod.LCBMConfigDesc.xml";
+            try
             {
-                string cfgname = cfgnode.Attributes.GetNamedItem("name").InnerText;
-                foreach (XmlNode DescNode in cfgnode)
+                Stream stream = assembly.GetManifestResourceStream(resourceName);
+                XmlDocument ConfigxmlDocument = new XmlDocument();
+                ConfigxmlDocument.Load(stream);
+                foreach (XmlNode cfgnode in ConfigxmlDocument.SelectNodes("ConfigDesc/Config"))
                 {
-                    string lang = DescNode.Attributes.GetNamedItem("lang").InnerText;
-                    string desc = DescNode.InnerText;
-                    _ConfigDesc[lang].Add(cfgname, desc);
-                   // LCBaseMod.Instance.MakeMessageLog($"Added Desc {cfgname}：{desc} （{lang}）");
+                    string cfgname = cfgnode.Attributes.GetNamedItem("name").InnerText;
+                    foreach (XmlNode DescNode in cfgnode)
+                    {
+                        string lang = DescNode.Attributes.GetNamedItem("lang").InnerText;
+                        string desc = DescNode.InnerText;
+                        _ConfigDesc[lang].Add(cfgname, desc);
+                        // LCBaseMod.Instance.MakeMessageLog($"Added Desc {cfgname}：{desc} （{lang}）");
+                    }
                 }
             }
+            catch(Exception e)
+            {
+                CfgDescLodedFlag = true;
+                Debug.LogException(e);
+            }
+
 
         }
 
         private string GetConfigDesc(string cfgname)
         {
+            if (CfgDescLodedFlag)
+            {
+                return "";
+            }
             if (_ConfigDesc[__lang].TryGetValue(cfgname ,out string _r))
             {
                 return _r;

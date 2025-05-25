@@ -9,7 +9,7 @@ using UnityEngine;
 using static AgentTitleTypeList;
 using static CreatureMaxObserve;
 
-namespace LCBaseModForBepinEx
+namespace LCBaseMod
 {
     
     public interface IBaseModCommand

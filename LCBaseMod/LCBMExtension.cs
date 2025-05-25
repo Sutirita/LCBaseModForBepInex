@@ -1,5 +1,4 @@
-﻿
-
+﻿using HarmonyLib;
 using Spine;
 using Spine.Unity;
 using System;
@@ -14,14 +13,8 @@ using System.Xml;
 using System.Xml.Linq;
 using UnityEngine;
 
-namespace LCBaseModForBepinEx
+namespace LCBaseMod
 {
-
-
-
-
-
-
     class ExtensionManager
     {
 
@@ -361,11 +354,8 @@ namespace LCBaseModForBepinEx
 
                 LoadModAssembly(FileInfo);
             }
-            for (int i = 0; i < __ExtensionSubDirInfo.Length; i++)
-                
+            for (int i = 0; i < __ExtensionSubDirInfo.Length; i++)           
             {
-                
-
                     
                 switch (__ExtensionSubDirInfo[i].Name)
                     {
@@ -373,8 +363,8 @@ namespace LCBaseModForBepinEx
                     
                     case ("Info"):
 
-                            /*                    if (File.Exists(Path.Combine(__ExtensionDir, "Info", "config.xml")))
-                            {
+                            /*                 
+                             TODO
 
                             }*/
                             break;
@@ -382,13 +372,13 @@ namespace LCBaseModForBepinEx
 
                         
                     case ("CustomEffect"):
-                    
+                    //TODO
                         break;
 
 
                         
                     case ("Equipment"):
-                    
+                    //TODO
                         break;
                         
                     case ("CreatureAnimation"):
@@ -434,7 +424,7 @@ namespace LCBaseModForBepinEx
 
         private void LoadCustomEffect()
         {
-
+            
         }
 
 
@@ -475,36 +465,48 @@ namespace LCBaseModForBepinEx
                         }
                     }
                 }
-                string skeletonData = "";
+                string skeletonStringData = "";
+                byte[] skeletonByteData = null;
                 string atlasData = "";
                 try
                 {
+
+
+
                     if (File.Exists(curdirinfo.FullName + "/json.txt"))
                     {
-                        skeletonData = File.ReadAllText(curdirinfo.FullName + "/json.txt");
-                       
+                        //json形式1
+                        skeletonStringData = File.ReadAllText(curdirinfo.FullName + "/json.txt");
+
                     }
                     else if (File.Exists(curdirinfo.FullName + "/skeleton.skel"))
                     {
-                        skeletonData = File.ReadAllText(curdirinfo.FullName + "/skeleton.skel");
-                       
+                        //skel形式1
+                        skeletonByteData = File.ReadAllBytes(curdirinfo.FullName + "/skeleton.skel");
+
                     }
                     else if (File.Exists(curdirinfo.FullName + $"/{curdirinfo.Name}.json"))
-                        
                     {
-                        skeletonData = File.ReadAllText(curdirinfo.FullName + $"/{curdirinfo.Name}.json");
-                        
+                        //json形式2
+                        skeletonStringData = File.ReadAllText(curdirinfo.FullName + $"/{curdirinfo.Name}.json");
+
                     }
                     else if (File.Exists(curdirinfo.FullName + $"/{curdirinfo.Name}.skel"))
                     {
-                        skeletonData = File.ReadAllText(curdirinfo.FullName + $"/{curdirinfo.Name}.skel");
-                      
+                        //skel形式2
+                        skeletonByteData = File.ReadAllBytes(curdirinfo.FullName + $"/{curdirinfo.Name}.skel");
+
                     }
+
+
+
+
+                    //两种atlas文件读取
                     if (File.Exists(curdirinfo.FullName + "/atlas.txt"))
                     {
 
                         atlasData = File.ReadAllText(curdirinfo.FullName + "/atlas.txt");
-                      
+
                     }
                     else if (File.Exists(curdirinfo.FullName + $"/{curdirinfo.Name}.atlas"))
                     {
@@ -514,19 +516,36 @@ namespace LCBaseModForBepinEx
 
 
                     Shader shader = Shader.Find("Spine/Skeleton");
+
                     Material materialPropertySource = new Material(shader);
-                 //  AtlasAsset atlasAsset =AtlasAsset.CreateRuntimeInstance(atlasData, TextureList.ToArray(), materialPropertySource, true);
+
+
+                    //atlasData
+
+                    //   AtlasAsset atlasAsset = AtlasAsset.CreateRuntimeInstance(new TextAsset(), TextureList.ToArray(), materialPropertySource, true);
+
+                    AtlasAsset atlasAsset = LCBM_Tools_Spine.CreateAtlaAssetRuntimeInstance(atlasData, TextureList.ToArray(), materialPropertySource, true);
+
+                    //skeletonData
+                    SkeletonDataAsset SkeleDataAsset = LCBM_Tools_Spine.CreateSDARuntimeInstanceByString(skeletonStringData, atlasAsset, true, 0.01f);
 
 
 
+                    if (SkeleDataAsset != null)
+                    {
+                        __CreatureAnimSkeleDataLib[curdirinfo.Name] = SkeleDataAsset;
+
+                        LCBaseMod.Instance.MakeInfoLog($"Anim:{"Custom/" + curdirinfo.Name} Loaded.");
+
+                    }
+                    else
+                    {
+                        LCBaseMod.Instance.MakeErrorLog($"Failed to load Anim:{"Custom/" + curdirinfo.Name}.");
+                    }
 
 
 
-
-                 //   SkeletonDataAsset SkeleDataAsset =SkeletonDataAsset.CreateRuntimeInstance(skeletonData, atlasAsset, true, 0.01f);
-
-                 //   __CreatureAnimSkeleDataLib[curdirinfo.Name] = SkeleDataAsset;
-                    LCBaseMod.Instance.MakeInfoLog($"Anim:{"Custom/" + curdirinfo.Name} Loaded.");
+                   
 
                 }
                 catch(Exception e)
@@ -662,9 +681,10 @@ namespace LCBaseModForBepinEx
         {
             foreach (FileInfo _File in FileList)
             {
+                //识别.xml和.txt
                 if (_File.Name.EndsWith(".xml")|| _File.Name.EndsWith(".txt") )
                 {
-
+                    //加载文件
                     XmlDocument doc = new XmlDocument();
                     string TheCreatureSrc = "";
                     try
@@ -678,13 +698,14 @@ namespace LCBaseModForBepinEx
                         LCBaseMod.Instance.MakeErrorLog($"Exception in loading Creatures at Mod:{__ExtensionDirName}\n FileName:{_File.Name}");
                         UnityEngine.Debug.LogException(e);
                         continue;
-                    }             
+                    }
+
+                    //不重复添加
                     if (!__CreatureStatLib.Keys.Contains(TheCreatureSrc))             
                     {
                             __CreatureStatLib[TheCreatureSrc] = doc;
                         
                     }
-                        
                     else           
                     {
                         LCBaseMod.Instance.MakeErrorLog($"The {TheCreatureSrc} already exists in CreatureStatLib. Mod:{__ExtensionDirName}");

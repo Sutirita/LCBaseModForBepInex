@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Xml;
 using UnityEngine;
 
-namespace LCBaseModForBepinEx
+namespace LCBaseMod
 {
     [BepInPlugin("com.Sutirita.LobotomyCropBaseMod", "LCBaseMod", "0.1.5")]
     [BepInProcess("LobotomyCorp.exe")]

@@ -11,10 +11,11 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Spine;
 using Spine.Unity;
+using System.Runtime.InteropServices.ComTypes;
 
 
 
-namespace LCBaseModForBepinEx{
+namespace LCBaseMod{
     
     public  class LCBM_Tools_CDL
     {
@@ -1640,23 +1641,148 @@ namespace LCBaseModForBepinEx{
     public class LCBM_Tools_Spine
     {
 
+        public static AtlasAsset CreateAtlaAssetRuntimeInstance(string atlasTextData, Texture2D[] textures, Material materialPropertySource, bool initialize)
+        {
+
+
+
+            string text = atlasTextData;
+            text = text.Replace("\r", string.Empty);
+            string[] array = text.Split('\n');
+            List<string> list = new List<string>();
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                if (array[i].Trim().Length == 0)
+                {
+                    list.Add(array[i + 1].Trim().Replace(".png", string.Empty));
+                }
+            }
+
+            Material[] array2 = new Material[list.Count];
+            int j = 0;
+            for (int count = list.Count; j < count; j++)
+            {
+                Material material = null;
+                string a = list[j];
+                int k = 0;
+                for (int num = textures.Length; k < num; k++)
+                {
+                    if (string.Equals(a, textures[k].name, StringComparison.OrdinalIgnoreCase))
+                    {
+                        material = new Material(materialPropertySource);
+                        material.mainTexture = textures[k];
+                        break;
+                    }
+                }
+
+                if (material != null)
+                {
+                    array2[j] = material;
+                    continue;
+                }
+
+                throw new ArgumentException("Could not find matching atlas page in the texture array.");
+            }
+
+
+
+            AtlasAsset atlasAsset = ScriptableObject.CreateInstance<AtlasAsset>();
+            atlasAsset.Clear();
+         
+            atlasAsset.atlasFile = new TextAsset();
+
+            atlasAsset.materials = array2;
+            if (initialize)
+            {
+               
+                Atlas _atlas = (Atlas)Traverse.Create(atlasAsset).Field("atlas").GetValue();
+                _atlas = new Atlas(new StringReader(text), string.Empty, new MaterialsTextureLoader(atlasAsset));
+                _atlas.FlipV();
+                Traverse.Create(atlasAsset).Field("atlas").SetValue(_atlas);
+                atlasAsset.GetAtlas();
+
+            }
+
+            return atlasAsset;
 
 
 
 
 
 
+        }
 
 
 
 
 
 
+        public static SkeletonDataAsset CreateSDARuntimeInstanceByString(string skeletonData, AtlasAsset atlasAsset, bool initialize, float scale = 0.01f)
+        {
+            return CreateSDARuntimeInstanceByString(skeletonData, new AtlasAsset[1] { atlasAsset }, initialize, scale);
+        }
 
 
 
 
+        public static SkeletonDataAsset CreateSDARuntimeInstanceByString(string skeletonData, AtlasAsset[] atlasAssets, bool initialize, float scale = 0.01f)
+        {
+            SkeletonDataAsset skeletonDataAsset = ScriptableObject.CreateInstance<SkeletonDataAsset>();
+            skeletonDataAsset.Clear();
+            skeletonDataAsset.skeletonJSON = new TextAsset();
+            skeletonDataAsset.atlasAssets = atlasAssets;
+            skeletonDataAsset.scale = scale;
 
+            if (initialize)
+            {
+                Atlas[] atlasArray = GetAtlasArray(skeletonDataAsset.atlasAssets);
+                AttachmentLoader attachmentLoader = new AtlasAttachmentLoader(atlasArray);
+                SkeletonData sd;
+                try
+                {
+                    sd = ReadSkeletonData(skeletonData, attachmentLoader, scale);
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+                Traverse.Create(skeletonDataAsset).Field("skeletonData").SetValue(sd);
+                Traverse.Create(skeletonDataAsset).Field("stateData").SetValue( new AnimationStateData(sd));
+                skeletonDataAsset.FillStateData();
+            }
+        
+
+            return skeletonDataAsset;
+        }
+
+
+
+        public static Atlas[] GetAtlasArray(AtlasAsset[] atlasAssets)
+        {
+            List<Atlas> list = new List<Atlas>(atlasAssets.Length);
+            for (int i = 0; i < atlasAssets.Length; i++)
+            {
+                AtlasAsset atlasAsset = atlasAssets[i];
+                if (!(atlasAsset == null))
+                {
+                    Atlas atlas = atlasAsset.GetAtlas();
+                    if (atlas != null)
+                    {
+                        list.Add(atlas);
+                    }
+                }
+            }
+
+            return list.ToArray();
+        }
+        public static SkeletonData ReadSkeletonData(string text, AttachmentLoader attachmentLoader, float scale)
+        {
+            StringReader reader = new StringReader(text);
+            SkeletonJson skeletonJson = new SkeletonJson(attachmentLoader);
+            skeletonJson.Scale = scale;
+            SkeletonJson skeletonJson2 = skeletonJson;
+            return skeletonJson2.ReadSkeletonData(reader);
+        }   
 
 
 
@@ -1668,7 +1794,7 @@ namespace LCBaseModForBepinEx{
 
 
 
-    }
+}
 
 
 
