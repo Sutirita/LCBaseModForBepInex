@@ -1,10 +1,7 @@
 ﻿using BepInEx;
 using HarmonyLib;
 using System;
-using System.ComponentModel;
 using System.IO;
-using System.Reflection;
-using System.Xml;
 using UnityEngine;
 
 namespace LCBaseMod
@@ -13,15 +10,18 @@ namespace LCBaseMod
     [BepInProcess("LobotomyCorp.exe")]
     public class LCBaseMod : BaseUnityPlugin
     {
-        private string _PluginVer = "0.1.5";
+        private string _PluginVer = "0.1.8";
 
         private static LCBaseMod _instance;
 
         //基本文件夹
         private static string _PluginDirPath= Path.Combine(BepInEx.Paths.PluginPath, "Sutirita-LCBaseMod");
+
+
         private static string _SaveBackUpDirPath=Path.Combine(_PluginDirPath, "backup");
      
         private static string _ModDirPath= Path.Combine(_PluginDirPath, "Mods");
+
 
 
 
@@ -43,6 +43,22 @@ namespace LCBaseMod
         // 在插件启动时会直接调用Awake()方法
         void Awake()
         {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             if (!BMConfigManager.instance.cfg_EnableBaseMod.Value)
             {
                 MakeMessageLog("LCBaseMod  is currently disabled..");
@@ -82,8 +98,6 @@ namespace LCBaseMod
         void Start()
         {
 
-
-
         }
 
         // 插件启动后会一直循环执行Update()方法，可用于监听事件或判断键盘按键，执行顺序在Start()后面
@@ -93,14 +107,14 @@ namespace LCBaseMod
 
         }
 
-        // 在插件关闭时会调用OnDestroy()方法
+        // 在插件关闭时
 
         void OnDestroy()
         {
             BMConfigManager.instance.Save();
 
             Debug.Log("OnDestroyed");
-        }
+        } 
 
 
         public string GetVertionStr()

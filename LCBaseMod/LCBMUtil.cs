@@ -3,15 +3,12 @@ using HarmonyLib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Xml;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Spine;
 using Spine.Unity;
-using System.Runtime.InteropServices.ComTypes;
 
 
 
@@ -1744,6 +1741,8 @@ namespace LCBaseMod{
                 }
                 catch (Exception ex)
                 {
+                    //LC的原生Spine版本不够高
+                  //  UnityEngine.Debug.LogException(ex);
                     return null;
                 }
                 Traverse.Create(skeletonDataAsset).Field("skeletonData").SetValue(sd);
@@ -1782,7 +1781,18 @@ namespace LCBaseMod{
             skeletonJson.Scale = scale;
             SkeletonJson skeletonJson2 = skeletonJson;
             return skeletonJson2.ReadSkeletonData(reader);
-        }   
+        }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

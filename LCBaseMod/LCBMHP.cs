@@ -1,23 +1,15 @@
-﻿
-using BepInEx.Core.Logging.Interpolation;
-using CommandWindow;
+﻿using CommandWindow;
 using CreatureInfo;
 using Credit;
 using HarmonyLib;
 using Inventory;
-using nightowl.DistortionShaderPack;
 using Spine;
 using Spine.Unity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
 using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;

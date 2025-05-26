@@ -1,24 +1,18 @@
-﻿using HarmonyLib;
-using Spine;
-using Spine.Unity;
+﻿using Spine.Unity;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
-using System.Xml.Linq;
 using UnityEngine;
 
 namespace LCBaseMod
 {
     class ExtensionManager
     {
-
-
 
         private List<Extension> ExtensionList= new List<Extension>();
 
