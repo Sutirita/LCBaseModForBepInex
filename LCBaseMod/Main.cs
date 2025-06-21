@@ -12,11 +12,11 @@ using LCBaseMod.LCBMToolKit;
 
 namespace LCBaseMod
 {
-    [BepInPlugin("com.Sutirita.LobotomyCropBaseMod", "LCBaseMod", "0.1.5")]
+    [BepInPlugin("com.Sutirita.LobotomyCropBaseMod", "LCBaseMod", "0.2.1")]
     [BepInProcess("LobotomyCorp.exe")]
     public class LCBaseMod : BaseUnityPlugin
     {
-        private string _PluginVer = "0.2.0";
+        private string _PluginVer = "0.2.1";
 
         private static LCBaseMod _instance;
 

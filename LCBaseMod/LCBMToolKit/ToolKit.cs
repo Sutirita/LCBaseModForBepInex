@@ -185,6 +185,9 @@ namespace LCBaseMod.LCBMToolKit
                 case (SefiraEnum.DAAT):
                     SefiraPortraitSprite = Resources.Load<Sprite>("sprites/story/portrait/angelaportrait");
                     break;
+                default:
+                     SefiraPortraitSprite = Resources.Load<Sprite>("sprites/story/portrait/angelaportrait");
+                    break;
             }
             SetConversation(SefiraPortraitSprite,color, __Name);
         }
@@ -227,15 +230,6 @@ namespace LCBaseMod.LCBMToolKit
         
 
     }
-
-
-
-
-
-
-
-
-
 
 
 
