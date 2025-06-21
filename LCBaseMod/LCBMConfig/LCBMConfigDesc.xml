@@ -1,0 +1,77 @@
+﻿
+<ConfigDesc>
+
+	
+	<Config name="EnableBaseMod">
+		<Desc lang="cn">启用LCBaseMod</Desc>
+		<Desc lang="en">TempText</Desc>
+		<Desc lang="jp">TempText</Desc>
+		<Desc lang="ru">TempText</Desc>
+		<Desc lang="kr">TempText</Desc>
+	</Config>
+
+	<Config name="AllowCreatureOverwrite">
+		<Desc lang="cn">允许使用相同的ID覆写异想体</Desc>
+		<Desc lang="en">TempText</Desc>
+		<Desc lang="jp">TempText</Desc>
+		<Desc lang="ru">TempText</Desc>
+		<Desc lang="kr">TempText</Desc>
+	</Config>
+	
+	<Config name="AutoSaveBackUp">
+		<Desc lang="cn">启动游戏时自动备份存档文件</Desc>
+		<Desc lang="en">TempText</Desc>
+		<Desc lang="jp">TempText</Desc>
+		<Desc lang="ru">TempText</Desc>
+		<Desc lang="kr">TempText</Desc>
+	</Config>
+
+	<Config name="BaseModConsole">
+		<Desc lang="cn">使用LCBaseMod的控制台</Desc>
+		<Desc lang="en">TempText</Desc>
+		<Desc lang="jp">TempText</Desc>
+		<Desc lang="ru">TempText</Desc>
+		<Desc lang="kr">TempText</Desc>
+	</Config>
+	<Config name="DmgPrecision">
+		<Desc lang="cn">伤害显示效果精度</Desc>
+		<Desc lang="en">TempText</Desc>
+		<Desc lang="jp">TempText</Desc>
+		<Desc lang="ru">TempText</Desc>
+		<Desc lang="kr">TempText</Desc>
+	</Config>
+	<Config name="AgentSoltPrecision">
+		<Desc lang="cn">员工UI显示精度</Desc>
+		<Desc lang="en">TempText</Desc>
+		<Desc lang="jp">TempText</Desc>
+		<Desc lang="ru">TempText</Desc>
+		<Desc lang="kr">TempText</Desc>
+	</Config>
+	<Config name="CreatureHpPrecision">
+		<Desc lang="cn">单位HP显示精度</Desc>
+		<Desc lang="en">TempText</Desc>
+		<Desc lang="jp">TempText</Desc>
+		<Desc lang="ru">TempText</Desc>
+		<Desc lang="kr">TempText</Desc>
+	</Config>
+
+	<Config name="DefensePrecision">
+		<Desc lang="cn">护甲抗性显示精度</Desc>
+		<Desc lang="en">TempText</Desc>
+		<Desc lang="jp">TempText</Desc>
+		<Desc lang="ru">TempText</Desc>
+		<Desc lang="kr">TempText</Desc>
+	</Config>
+
+	<Config name="WorkSuccessPrecision">
+		<Desc lang="cn">工作成功率显示精度</Desc>
+		<Desc lang="en">TempText</Desc>
+		<Desc lang="jp">TempText</Desc>
+		<Desc lang="ru">TempText</Desc>
+		<Desc lang="kr">TempText</Desc>
+	</Config>
+
+
+
+</ConfigDesc>
+	
